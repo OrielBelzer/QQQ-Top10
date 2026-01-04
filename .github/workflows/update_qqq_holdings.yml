@@ -21,15 +21,15 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Run scraper
+      - name: Run scraper + write history
         run: |
           python scripts/fetch_holdings.py
+          python scripts/write_history.py
 
       - name: Commit & push updated holdings + history
         run: |
           set -e
           git status
-
           git add public/qqq-holdings.json public/history/index.json public/history/*.json || true
 
           if git diff --cached --quiet; then
