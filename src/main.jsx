@@ -3,20 +3,44 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./styles.css";
 
-function showErrorOnPage(label, err) {
-  const msg = err?.stack || err?.message || String(err);
-  document.body.innerHTML =
-    "<div style='padding:16px;font-family:ui-monospace,Menlo,monospace;white-space:pre-wrap;color:#b00020'>" +
-    label + "\n\n" + msg +
-    "</div>";
+function fmt(x) {
+  try {
+    if (x instanceof Error) return `${x.name}: ${x.message}\n\n${x.stack || ""}`;
+    if (typeof x === "string") return x;
+    return JSON.stringify(x, Object.getOwnPropertyNames(x), 2);
+  } catch {
+    return String(x);
+  }
+}
+
+function show(label, details) {
+  const html = `
+<div style="padding:16px;font-family:ui-monospace,Menlo,monospace;white-space:pre-wrap;color:#b00020">
+${label}
+
+${details}
+</div>`;
+  document.body.innerHTML = html;
 }
 
 window.addEventListener("error", (e) => {
-  showErrorOnPage("Runtime error", e?.error || e?.message || e);
+  // Safari sometimes gives an ErrorEvent without e.error populated
+  const parts = [
+    `message: ${e?.message || ""}`,
+    `source: ${e?.filename || ""}:${e?.lineno || ""}:${e?.colno || ""}`,
+    "",
+    "error:",
+    fmt(e?.error || e)
+  ].join("\n");
+  show("Runtime error", parts);
 });
 
 window.addEventListener("unhandledrejection", (e) => {
-  showErrorOnPage("Unhandled promise rejection", e?.reason || e);
+  const parts = [
+    "reason:",
+    fmt(e?.reason || e)
+  ].join("\n");
+  show("Unhandled promise rejection", parts);
 });
 
 try {
@@ -28,5 +52,5 @@ try {
     </React.StrictMode>
   );
 } catch (e) {
-  showErrorOnPage("Startup error", e);
+  show("Startup error", fmt(e));
 }
