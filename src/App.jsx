@@ -55,7 +55,7 @@ export default function App() {
       ) : tab === "rebalance" ? (
         <Rebalancer qqqTop10={qqqTop10} customStocks={[]} />
       ) : (
-        <HoldingsOverview qqq={qqq} />
+        <HoldingsOverview holdingsData={qqq} />
       )}
     </div>
   );
