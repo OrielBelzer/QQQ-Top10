@@ -14,19 +14,34 @@ def fetch(url: str) -> str:
     with urllib.request.urlopen(req, timeout=30) as resp:
         return resp.read().decode("utf-8", errors="replace")
 
-def parse_as_of_close(html: str) -> str:
-    m = re.search(r"As of close\s+(\d{2}/\d{2}/\d{4})", html)
+def html_to_text(html: str) -> str:
+    # remove scripts/styles (helps a lot)
+    html = re.sub(r"<script[^>]*>.*?</script>", " ", html, flags=re.S | re.I)
+    html = re.sub(r"<style[^>]*>.*?</style>", " ", html, flags=re.S | re.I)
+    # drop tags
+    html = re.sub(r"<[^>]+>", " ", html)
+    # common entities
+    html = html.replace("&nbsp;", " ").replace("&amp;", "&")
+    # normalize whitespace
+    html = re.sub(r"\s+", " ", html).strip()
+    return html
+
+def parse_as_of_close(text: str) -> str:
+    m = re.search(r"As of close\s+(\d{2}/\d{2}/\d{4})", text)
     return m.group(1) if m else ""
 
-def parse_holdings(html: str):
-    pattern = re.compile(r"\b([A-Z]{1,6})\s+(.+?)\s+(\d+\.\d+)%")
+def parse_holdings(text: str):
+    # Matches lines like: "NVDA NVIDIA Corp 9.01%"
+    # (The Schwab page often concatenates after %, so we stop at the %.)
+    pattern = re.compile(r"\b([A-Z]{1,6})\s+(.+?)\s+(\d{1,2}\.\d{1,2})%")
     results = []
 
-    idx = html.find("Symbol")
+    # Start around where the holdings table begins
+    idx = text.find("Symbol Description % Portfolio Weight")
     if idx == -1:
-        return results
+        idx = text.find("Symbol Description % Portfolio")  # fallback
+    body = text[idx:] if idx != -1 else text
 
-    body = html[idx:]
     for sym, name, weight in pattern.findall(body):
         w = float(weight)
         if w <= 0 or w > 25:
@@ -37,6 +52,7 @@ def parse_holdings(html: str):
             "weightPct": w
         })
 
+    # de-dupe by symbol, keep first occurrence
     seen = set()
     uniq = []
     for r in results:
@@ -49,11 +65,15 @@ def parse_holdings(html: str):
 
 def main():
     html = fetch(SCHWAB_URL)
-    as_of = parse_as_of_close(html)
-    holdings = parse_holdings(html)
+    text = html_to_text(html)
 
-    if len(holdings) < 20:
-        print("ERROR: parsed too few holdings. Page format may have changed.", file=sys.stderr)
+    as_of = parse_as_of_close(text)
+    holdings = parse_holdings(text)
+
+    # IMPORTANT: Schwab may only show ~20 per page in the HTML.
+    # We only need Top 10, so require >=10 (not 20).
+    if len(holdings) < 10:
+        print("ERROR: parsed too few holdings (<10). Page format may have changed.", file=sys.stderr)
         sys.exit(1)
 
     payload = {

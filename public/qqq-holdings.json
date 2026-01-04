@@ -1,7 +1,7 @@
 {
   "source": "schwab",
   "asOfClose": "01/02/2026",
-  "fetchedAtUtc": "2026-01-03T00:00:00Z",
+  "fetchedAtUtc": "2026-01-04T04:14:56.690362Z",
   "holdings": [
     {
       "symbol": "NVDA",
@@ -49,9 +49,59 @@
       "weightPct": 3.27
     },
     {
+      "symbol": "PLTR",
+      "name": "Palantir Technologies Inc Ordinary Share...",
+      "weightPct": 2.25
+    },
+    {
+      "symbol": "NFLX",
+      "name": "Netflix Inc",
+      "weightPct": 2.17
+    },
+    {
       "symbol": "COST",
       "name": "Costco Wholesale Corp",
-      "weightPct": 2.25
+      "weightPct": 2.09
+    },
+    {
+      "symbol": "AMD",
+      "name": "Advanced Micro Devices Inc",
+      "weightPct": 1.91
+    },
+    {
+      "symbol": "MU",
+      "name": "Micron Technology Inc",
+      "weightPct": 1.8
+    },
+    {
+      "symbol": "CSCO",
+      "name": "Cisco Systems Inc",
+      "weightPct": 1.67
+    },
+    {
+      "symbol": "TMUS",
+      "name": "T-Mobile US Inc",
+      "weightPct": 1.24
+    },
+    {
+      "symbol": "LRCX",
+      "name": "Lam Research Corp",
+      "weightPct": 1.19
+    },
+    {
+      "symbol": "APP",
+      "name": "AppLovin Corp Ordinary Shares - Class A",
+      "weightPct": 1.16
+    },
+    {
+      "symbol": "AMAT",
+      "name": "Applied Materials Inc",
+      "weightPct": 1.13
+    },
+    {
+      "symbol": "ISRG",
+      "name": "Intuitive Surgical Inc",
+      "weightPct": 1.11
     }
   ]
 }
