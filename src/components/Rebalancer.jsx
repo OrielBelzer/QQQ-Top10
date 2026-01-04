@@ -25,16 +25,23 @@ export default function Rebalancer({ qqqTop10, customStocks = [] }) {
     return [...map.values()];
   }, [qqqTop10, customStocks]);
 
+  // Build symbol set for parsing/aliasing
+  const baseAllowedSymbolsSet = useMemo(() => new Set(baseSymbols.map(s => s.symbol)), [baseSymbols]);
+  const hasCombinedAlphabet = baseAllowedSymbolsSet.has("GOOG+GOOGL");
+
   // Include any symbols that exist in CURRENT holdings (even if not in today's Top10)
+  // but if combined Alphabet exists, never show GOOG/GOOGL as separate rows
   const symbols = useMemo(() => {
     const map = new Map(baseSymbols.map(s => [s.symbol, s]));
+
     for (const sym of Object.keys(current || {})) {
+      if (hasCombinedAlphabet && (sym === "GOOG" || sym === "GOOGL")) continue;
       if (!map.has(sym)) {
         map.set(sym, { symbol: sym, name: `${sym} (not in target)` });
       }
     }
     return [...map.values()];
-  }, [baseSymbols, current]);
+  }, [baseSymbols, current, hasCombinedAlphabet]);
 
   const allowedSymbolsSet = useMemo(() => new Set(symbols.map(s => s.symbol)), [symbols]);
 
@@ -43,15 +50,17 @@ export default function Rebalancer({ qqqTop10, customStocks = [] }) {
   }, [qqqTop10, useTop10As100Pct, customStocks]);
 
   // Extend targets with any current-only symbols => targetPct 0
+  // and if combined Alphabet exists, never add GOOG/GOOGL as 0% rows
   const extendedTargets = useMemo(() => {
     const tMap = new Map((targets || []).map(t => [t.symbol, t]));
     for (const sym of Object.keys(current || {})) {
+      if (hasCombinedAlphabet && (sym === "GOOG" || sym === "GOOGL")) continue;
       if (!tMap.has(sym)) {
         tMap.set(sym, { symbol: sym, name: `${sym} (not in target)`, targetPct: 0 });
       }
     }
     return [...tMap.values()];
-  }, [targets, current]);
+  }, [targets, current, hasCombinedAlphabet]);
 
   const result = useMemo(() => {
     if (mode === "newTotal") {
@@ -85,7 +94,22 @@ export default function Rebalancer({ qqqTop10, customStocks = [] }) {
       return;
     }
 
-    setCurrent(prev => ({ ...prev, ...parsed }));
+    // If the app uses combined Alphabet, fold GOOG/GOOGL into GOOG+GOOGL and remove the originals
+    if (hasCombinedAlphabet) {
+      const g = (parsed.GOOG || 0) + (parsed.GOOGL || 0);
+      if (g > 0) parsed["GOOG+GOOGL"] = (parsed["GOOG+GOOGL"] || 0) + g;
+      delete parsed.GOOG;
+      delete parsed.GOOGL;
+    }
+
+    setCurrent(prev => {
+      const next = { ...prev, ...parsed };
+      if (hasCombinedAlphabet) {
+        delete next.GOOG;
+        delete next.GOOGL;
+      }
+      return next;
+    });
   }
 
   function clearCurrent() {
