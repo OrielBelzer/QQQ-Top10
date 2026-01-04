@@ -1,107 +1,107 @@
 {
   "source": "schwab (simulated)",
-  "asOfClose": "2026-01-02",
-  "fetchedAtUtc": "2026-01-04T22:15:19.234609Z",
+  "asOfClose": "2026-01-04",
+  "fetchedAtUtc": "2026-01-04T22:15:19.235959Z",
   "holdings": [
     {
       "symbol": "NVDA",
       "name": "NVIDIA Corp",
-      "weightPct": 9.0214
+      "weightPct": 9.1858
     },
     {
       "symbol": "AAPL",
       "name": "Apple Inc",
-      "weightPct": 7.7767
+      "weightPct": 7.9906
     },
     {
       "symbol": "MSFT",
       "name": "Microsoft Corp",
-      "weightPct": 7.194
+      "weightPct": 7.3486
     },
     {
       "symbol": "AMZN",
       "name": "Amazon.com Inc",
-      "weightPct": 5.1704
+      "weightPct": 4.9269
     },
     {
       "symbol": "TSLA",
       "name": "Tesla Inc",
-      "weightPct": 3.886
+      "weightPct": 3.6172
     },
     {
       "symbol": "META",
       "name": "Meta Platforms Inc Class A",
-      "weightPct": 3.6607
+      "weightPct": 3.7436
     },
     {
       "symbol": "GOOGL",
       "name": "Alphabet Inc Class A",
-      "weightPct": 3.9445
+      "weightPct": 3.2708
     },
     {
       "symbol": "GOOG",
       "name": "Alphabet Inc Class C",
-      "weightPct": 3.355
+      "weightPct": 3.6572
     },
     {
       "symbol": "AVGO",
       "name": "Broadcom Inc",
-      "weightPct": 2.9732
+      "weightPct": 3.532
     },
     {
       "symbol": "PLTR",
       "name": "Palantir Technologies Inc Ordinary Share...",
-      "weightPct": 1.9263
+      "weightPct": 2.48
     },
     {
       "symbol": "NFLX",
       "name": "Netflix Inc",
-      "weightPct": 1.8902
+      "weightPct": 2.0335
     },
     {
       "symbol": "COST",
       "name": "Costco Wholesale Corp",
-      "weightPct": 2.1716
+      "weightPct": 1.779
     },
     {
       "symbol": "AMD",
       "name": "Advanced Micro Devices Inc",
-      "weightPct": 2.1071
+      "weightPct": 2.1727
     },
     {
       "symbol": "MU",
       "name": "Micron Technology Inc",
-      "weightPct": 1.7394
+      "weightPct": 2.1111
     },
     {
       "symbol": "CSCO",
       "name": "Cisco Systems Inc",
-      "weightPct": 1.3597
+      "weightPct": 1.3788
     },
     {
       "symbol": "TMUS",
       "name": "T-Mobile US Inc",
-      "weightPct": 1.1531
+      "weightPct": 1.2291
     },
     {
       "symbol": "LRCX",
       "name": "Lam Research Corp",
-      "weightPct": 1.5319
+      "weightPct": 0.8876
     },
     {
       "symbol": "APP",
       "name": "AppLovin Corp Ordinary Shares - Class A",
-      "weightPct": 1.1763
+      "weightPct": 1.3412
     },
     {
       "symbol": "AMAT",
       "name": "Applied Materials Inc",
-      "weightPct": 1.4547
+      "weightPct": 1.315
     },
     {
       "symbol": "ISRG",
       "name": "Intuitive Surgical Inc",
-      "weightPct": 1.3577
+      "weightPct": 0.8492
     }
   ],
   "mock": true
