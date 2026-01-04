@@ -1,4 +1,4 @@
-name: Update QQQ holdings JSON
+name: Update QQQ holdings
 
 on:
   workflow_dispatch:
@@ -12,9 +12,9 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-      - uses: actions/checkout        with:
-          fetch-depth: 0@v4
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -25,16 +25,11 @@ jobs:
         run: |
           python scripts/fetch_holdings.py
 
-      - name: Commit changes (if any)
-        run: |
-          git config user.name "qqq-holdings-bot"
-          git config user.email "qqq-holdings-bot@users.noreply.github.com"
-          git add public/qqq-holdings.json
-          git diff --staged --quiet || (git commit -m "Update QQQ holdings snapshot" && git push)
-
       - name: Commit & push updated holdings + history
         run: |
+          set -e
           git status
+
           git add public/qqq-holdings.json public/history/index.json public/history/*.json || true
 
           if git diff --cached --quiet; then
