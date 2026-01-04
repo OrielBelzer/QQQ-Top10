@@ -1,16 +1,16 @@
 import { useMemo, useState } from "react";
 import { usd, pct, parseNumber } from "../lib/format.js";
 import { buildTargets, rebalanceToNewTotal, rebalanceWithAdditionalInvestment } from "../lib/rebalance.js";
-import { ocrImageFile, parseHoldingsFromText } from "../lib/ocrParse.js";
+import { parseHoldingsPaste } from "../lib/pasteHoldings.js";
 
-export default function Rebalancer({ qqqTop10, customStocks }) {
+export default function Rebalancer({ qqqTop10, customStocks = [] }) {
   const [useTop10As100Pct, setUseTop10As100Pct] = useState(true);
   const [mode, setMode] = useState("newTotal"); // newTotal | additional
   const [newTotal, setNewTotal] = useState(50000);
   const [additional, setAdditional] = useState(5000);
 
   const symbols = useMemo(() => {
-    const base = qqqTop10.map(h => ({ symbol: h.symbol, name: h.name }));
+    const base = (qqqTop10 || []).map(h => ({ symbol: h.symbol, name: h.name }));
     const custom = (customStocks || []).map(s => ({ symbol: s.symbol, name: s.name || s.symbol }));
     const all = [...base, ...custom];
     const map = new Map();
@@ -22,11 +22,9 @@ export default function Rebalancer({ qqqTop10, customStocks }) {
 
   const [current, setCurrent] = useState(() => ({}));
 
-  // OCR state
-  const [ocrBusy, setOcrBusy] = useState(false);
-  const [ocrProgress, setOcrProgress] = useState(0);
-  const [ocrRaw, setOcrRaw] = useState("");
-  const [ocrError, setOcrError] = useState("");
+  // Paste-to-fill state
+  const [pasteText, setPasteText] = useState("");
+  const [pasteError, setPasteError] = useState("");
 
   const { targets } = useMemo(() => {
     return buildTargets({ qqqTop10, useTop10As100Pct, customStocks });
@@ -47,38 +45,27 @@ export default function Rebalancer({ qqqTop10, customStocks }) {
     });
   }, [mode, targets, current, newTotal, additional]);
 
-  async function handleScreenshotUpload(file) {
-    if (!file) return;
+  function parseAndFill() {
+    setPasteError("");
+    const parsed = parseHoldingsPaste(pasteText, allowedSymbolsSet);
 
-    setOcrError("");
-    setOcrRaw("");
-    setOcrBusy(true);
-    setOcrProgress(0);
-
-    try {
-      const text = await ocrImageFile(file, {
-        onProgress: p => setOcrProgress(p)
-      });
-
-      setOcrRaw(text);
-
-      const parsed = parseHoldingsFromText(text, allowedSymbolsSet);
-
-      if (Object.keys(parsed).length === 0) {
-        setOcrError(
-          "OCR finished, but I couldn’t confidently extract any symbol/value pairs. Try a clearer screenshot (cropped to the holdings table) with tickers + $ values visible."
-        );
-        return;
-      }
-
-      // Merge parsed values into current
-      setCurrent(prev => ({ ...prev, ...parsed }));
-    } catch (e) {
-      setOcrError(String(e?.message || e));
-    } finally {
-      setOcrBusy(false);
+    const count = Object.keys(parsed).length;
+    if (count === 0) {
+      setPasteError("No symbol/value pairs found. Try lines like: NVDA $8.83K or MSFT=7230");
+      return;
     }
+
+    setCurrent(prev => ({ ...prev, ...parsed }));
   }
+
+  function clearCurrent() {
+    setCurrent({});
+  }
+
+  const example = `NVDA $8.83K
+MSFT $7.23K
+AAPL $6.35K
+AMZN $4.60K`;
 
   return (
     <div className="card">
@@ -116,45 +103,40 @@ export default function Rebalancer({ qqqTop10, customStocks }) {
       </div>
 
       <div className="subtle" style={{ marginTop: 10 }}>
-        Enter your current $ value per symbol manually, or import via screenshot OCR below. The tool computes target weights
-        using the latest QQQ Top 10 snapshot.
+        Paste your current holdings values (from ChatGPT or anywhere) and click Parse & Fill.
       </div>
 
       <hr />
 
-      <h1 style={{ fontSize: 16, marginBottom: 8 }}>Import from screenshot (OCR)</h1>
+      <h1 style={{ fontSize: 16, marginBottom: 8 }}>Paste holdings</h1>
 
-      <div className="row" style={{ alignItems: "center" }}>
-        <div className="field" style={{ minWidth: 320 }}>
-          <label>Upload brokerage screenshot (PNG/JPG)</label>
-          <input
-            type="file"
-            accept="image/png,image/jpeg"
-            disabled={ocrBusy}
-            onChange={e => handleScreenshotUpload(e.target.files?.[0])}
-          />
-        </div>
-
-        <div className="field" style={{ justifyContent: "flex-end" }}>
-          <label>&nbsp;</label>
-          <span className="pill">{ocrBusy ? `OCR running… ${ocrProgress}%` : "Tip: crop to holdings table for best results"}</span>
-        </div>
+      <div className="subtle" style={{ marginBottom: 8 }}>
+        Supported formats per line: <span className="mono">NVDA $8.83K</span>, <span className="mono">MSFT=7230</span>,{" "}
+        <span className="mono">AAPL: 6,350</span>, <span className="mono">AMZN 4600</span>.
       </div>
 
-      {ocrError && (
-        <div className="card" style={{ borderColor: "#ffd2d2", background: "#fff7f7" }}>
-          <div className="subtle">
-            OCR error: <span className="mono">{ocrError}</span>
-          </div>
-        </div>
-      )}
+      <textarea
+        value={pasteText}
+        onChange={e => setPasteText(e.target.value)}
+        rows={6}
+        style={{ width: "100%", resize: "vertical" }}
+        placeholder={example}
+      />
 
-      {ocrRaw && (
-        <details className="card">
-          <summary className="subtle">Show OCR raw text (debug)</summary>
-          <pre className="mono" style={{ whiteSpace: "pre-wrap", margin: 0 }}>{ocrRaw}</pre>
-        </details>
-      )}
+      <div className="row" style={{ marginTop: 10, alignItems: "center" }}>
+        <button onClick={parseAndFill}>Parse & Fill</button>
+        <button onClick={() => setPasteText(example)} className="secondary">
+          Insert example
+        </button>
+        <button onClick={clearCurrent} className="secondary">
+          Clear current values
+        </button>
+        {pasteError && (
+          <span className="pill" style={{ borderColor: "#ffd2d2", background: "#fff7f7" }}>
+            <span className="mono">{pasteError}</span>
+          </span>
+        )}
+      </div>
 
       <hr />
 
