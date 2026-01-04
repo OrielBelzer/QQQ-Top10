@@ -131,10 +131,24 @@ COST $1.91K`;
       if (key === "current") return r.current;
       if (key === "targetValue") return r.targetValue;
       if (key === "delta") return r.delta;
-      if (key === "delta") return r.delta || 0;
       return r[key];
     });
   }, [result.rows, sortPlan]);
+
+  const currentSum = useMemo(() => {
+    return symbols.reduce((acc, s) => acc + (Number(current[s.symbol]) || 0), 0);
+  }, [symbols, current]);
+
+  const planSums = useMemo(() => {
+    const rows = result.rows || [];
+    const sum = (k) => rows.reduce((a, r) => a + (Number(r[k]) || 0), 0);
+    return {
+      targetPct: sum("targetPct"),
+      current: sum("current"),
+      targetValue: sum("targetValue"),
+      delta: sum("delta")
+    };
+  }, [result.rows]);
 
   return (
     <div className="card">
@@ -143,7 +157,7 @@ COST $1.91K`;
           <label>Top-10 weighting mode</label>
           <select value={useTop10As100Pct ? "100" : "actual"} onChange={e => setUseTop10As100Pct(e.target.value === "100")}>
             <option value="100">Use 100% (Top-10-only portfolio)</option>
-            <option value="actual">Use actual QQQ weights (Top-10 slice of QQQ)</option>
+            <option value="actual">Use actual QQQ weights (includes QQQ_OTHER)</option>
           </select>
         </div>
 
@@ -151,7 +165,7 @@ COST $1.91K`;
           <label>Rebalance method</label>
           <select value={mode} onChange={e => setMode(e.target.value)}>
             <option value="newTotal">New Total Portfolio Value (buy/sell)</option>
-            <option value="additional">Additional Investment Only (buys only)</option>
+            <option value="additional">Additional Investment (full rebalance)</option>
           </select>
         </div>
 
@@ -202,9 +216,15 @@ COST $1.91K`;
       <table className="table">
         <thead>
           <tr>
-            <th className="th-sort" onClick={() => setSortCurrent(s => nextSort(s, "symbol"))}>Symbol{sortIndicator(sortCurrent, "symbol")}</th>
-            <th className="th-sort" onClick={() => setSortCurrent(s => nextSort(s, "name"))}>Company{sortIndicator(sortCurrent, "name")}</th>
-            <th className="th-sort" onClick={() => setSortCurrent(s => nextSort(s, "current"))}>Current value{sortIndicator(sortCurrent, "current")}</th>
+            <th className="th-sort" onClick={() => setSortCurrent(s => nextSort(s, "symbol"))}>
+              Symbol{sortIndicator(sortCurrent, "symbol")}
+            </th>
+            <th className="th-sort" onClick={() => setSortCurrent(s => nextSort(s, "name"))}>
+              Company{sortIndicator(sortCurrent, "name")}
+            </th>
+            <th className="th-sort" onClick={() => setSortCurrent(s => nextSort(s, "current"))}>
+              Current value{sortIndicator(sortCurrent, "current")}
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -222,6 +242,13 @@ COST $1.91K`;
             </tr>
           ))}
         </tbody>
+        <tfoot>
+          <tr>
+            <td className="mono"><strong>Total</strong></td>
+            <td className="subtle"> </td>
+            <td><strong>{usd(currentSum)}</strong></td>
+          </tr>
+        </tfoot>
       </table>
 
       <hr />
@@ -238,31 +265,36 @@ COST $1.91K`;
             <th className="th-sort" onClick={() => setSortPlan(s => nextSort(s, "targetPct"))}>Target %{sortIndicator(sortPlan, "targetPct")}</th>
             <th className="th-sort" onClick={() => setSortPlan(s => nextSort(s, "current"))}>Current{sortIndicator(sortPlan, "current")}</th>
             <th className="th-sort" onClick={() => setSortPlan(s => nextSort(s, "targetValue"))}>Target{sortIndicator(sortPlan, "targetValue")}</th>
-            {mode === "newTotal" ? (
-              <th className="th-sort" onClick={() => setSortPlan(s => nextSort(s, "delta"))}>Buy/Sell{sortIndicator(sortPlan, "delta")}</th>
-            ) : (
-              <th className="th-sort" onClick={() => setSortPlan(s => nextSort(s, "delta"))}>Buy/Sell{sortIndicator(sortPlan, "delta")}</th>
-            )}
+            <th className="th-sort" onClick={() => setSortPlan(s => nextSort(s, "delta"))}>Buy/Sell{sortIndicator(sortPlan, "delta")}</th>
           </tr>
         </thead>
         <tbody>
           {planRows.map(r => {
-                  const buySell = r.delta || 0;
+            const buySell = r.delta || 0;
             return (
               <tr key={r.symbol}>
                 <td className="mono">{r.symbol}</td>
                 <td>{pct(r.targetPct)}</td>
                 <td>{usd(r.current)}</td>
                 <td>{usd(r.targetValue)}</td>
-                {mode === "newTotal" ? (
-                  <td>{buySell >= 0 ? `Buy ${usd(buySell)}` : `Sell ${usd(Math.abs(buySell))}`}</td>
-                ) : (
-                  <td>{buySell >= 0 ? `Buy ${usd(buySell)}` : `Sell ${usd(Math.abs(buySell))}`}</td>
-                )}
+                <td>{buySell >= 0 ? `Buy ${usd(buySell)}` : `Sell ${usd(Math.abs(buySell))}`}</td>
               </tr>
             );
           })}
         </tbody>
+        <tfoot>
+          <tr>
+            <td className="mono"><strong>Total</strong></td>
+            <td><strong>{pct(planSums.targetPct)}</strong></td>
+            <td><strong>{usd(planSums.current)}</strong></td>
+            <td><strong>{usd(planSums.targetValue)}</strong></td>
+            <td>
+              <strong>
+                {planSums.delta >= 0 ? `Net Buy ${usd(planSums.delta)}` : `Net Sell ${usd(Math.abs(planSums.delta))}`}
+              </strong>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );
