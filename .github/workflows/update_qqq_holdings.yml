@@ -13,7 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout
+        with:
+          fetch-depth: 0@v4
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -30,3 +32,18 @@ jobs:
           git config user.email "qqq-holdings-bot@users.noreply.github.com"
           git add public/qqq-holdings.json
           git diff --staged --quiet || (git commit -m "Update QQQ holdings snapshot" && git push)
+
+      - name: Commit & push updated holdings + history
+        run: |
+          git status
+          git add public/qqq-holdings.json public/history/index.json public/history/*.json || true
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update QQQ holdings history"
+          git push
