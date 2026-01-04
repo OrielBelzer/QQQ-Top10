@@ -1,7 +1,11 @@
 {
   "source": "schwab",
   "asOfClose": "01/02/2026",
+<<<<<<< HEAD
   "fetchedAtUtc": "2026-01-04T22:02:54.109608Z",
+=======
+  "fetchedAtUtc": "2026-01-04T21:55:16.423327Z",
+>>>>>>> e6349bf (Add holdings history snapshot)
   "holdings": [
     {
       "symbol": "NVDA",
