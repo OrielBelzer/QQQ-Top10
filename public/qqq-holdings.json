@@ -1,0 +1,57 @@
+{
+  "source": "schwab",
+  "asOfClose": "01/02/2026",
+  "fetchedAtUtc": "2026-01-03T00:00:00Z",
+  "holdings": [
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corp",
+      "weightPct": 9.01
+    },
+    {
+      "symbol": "AAPL",
+      "name": "Apple Inc",
+      "weightPct": 7.97
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft Corp",
+      "weightPct": 7.16
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon.com Inc",
+      "weightPct": 4.91
+    },
+    {
+      "symbol": "TSLA",
+      "name": "Tesla Inc",
+      "weightPct": 3.97
+    },
+    {
+      "symbol": "META",
+      "name": "Meta Platforms Inc Class A",
+      "weightPct": 3.87
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet Inc Class A",
+      "weightPct": 3.61
+    },
+    {
+      "symbol": "GOOG",
+      "name": "Alphabet Inc Class C",
+      "weightPct": 3.36
+    },
+    {
+      "symbol": "AVGO",
+      "name": "Broadcom Inc",
+      "weightPct": 3.27
+    },
+    {
+      "symbol": "COST",
+      "name": "Costco Wholesale Corp",
+      "weightPct": 2.25
+    }
+  ]
+}
