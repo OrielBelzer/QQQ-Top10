@@ -13,8 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout
-        with:
+      - uses: actions/checkout        with:
           fetch-depth: 0@v4
 
       - name: Setup Python
