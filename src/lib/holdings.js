@@ -18,7 +18,7 @@ export async function loadQqqHoldings() {
     source: data.source || "unknown",
     asOfClose: data.asOfClose || "",
     fetchedAtUtc: data.fetchedAtUtc || "",
-    holdings
+    holdings: holdings
       .map(h => ({
         symbol: String(h.symbol || "").toUpperCase().trim(),
         name: String(h.name || "").trim(),
