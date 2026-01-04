@@ -131,7 +131,7 @@ COST $1.91K`;
       if (key === "current") return r.current;
       if (key === "targetValue") return r.targetValue;
       if (key === "delta") return r.delta;
-      if (key === "suggestedBuy") return r.suggestedBuy || 0;
+      if (key === "delta") return r.delta || 0;
       return r[key];
     });
   }, [result.rows, sortPlan]);
@@ -241,14 +241,13 @@ COST $1.91K`;
             {mode === "newTotal" ? (
               <th className="th-sort" onClick={() => setSortPlan(s => nextSort(s, "delta"))}>Buy/Sell{sortIndicator(sortPlan, "delta")}</th>
             ) : (
-              <th className="th-sort" onClick={() => setSortPlan(s => nextSort(s, "suggestedBuy"))}>Suggested Buy{sortIndicator(sortPlan, "suggestedBuy")}</th>
+              <th className="th-sort" onClick={() => setSortPlan(s => nextSort(s, "delta"))}>Buy/Sell{sortIndicator(sortPlan, "delta")}</th>
             )}
           </tr>
         </thead>
         <tbody>
           {planRows.map(r => {
-            const buySell = r.delta;
-            const buyOnly = r.suggestedBuy || 0;
+                  const buySell = r.delta || 0;
             return (
               <tr key={r.symbol}>
                 <td className="mono">{r.symbol}</td>
@@ -258,7 +257,7 @@ COST $1.91K`;
                 {mode === "newTotal" ? (
                   <td>{buySell >= 0 ? `Buy ${usd(buySell)}` : `Sell ${usd(Math.abs(buySell))}`}</td>
                 ) : (
-                  <td>{buyOnly > 0 ? `Buy ${usd(buyOnly)}` : "—"}</td>
+                  <td>{buySell >= 0 ? `Buy ${usd(buySell)}` : `Sell ${usd(Math.abs(buySell))}`}</td>
                 )}
               </tr>
             );
