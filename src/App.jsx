@@ -51,9 +51,9 @@ export default function App() {
       {!qqq ? (
         <div className="card">Loading QQQ holdings…</div>
       ) : tab === "calc" ? (
-        <InvestmentCalculator qqqTop10={qqqTop10} />
+        <InvestmentCalculator qqqTop10={qqqTop10} customStocks={[]} />
       ) : tab === "rebalance" ? (
-        <Rebalancer qqqTop10={qqqTop10} />
+        <Rebalancer qqqTop10={qqqTop10} customStocks={[]} />
       ) : (
         <HoldingsOverview qqq={qqq} />
       )}
