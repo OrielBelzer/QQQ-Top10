@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
-import "./index.css";
+import "./styles.css";
 
 function showErrorOnPage(label, err) {
   const msg = err?.stack || err?.message || String(err);
