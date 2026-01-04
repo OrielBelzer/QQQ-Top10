@@ -112,3 +112,12 @@ hr {
   border-top: 1px solid #eee;
   margin: 14px 0;
 }
+
+/* Sortable table headers */
+.th-sort {
+  cursor: pointer;
+  user-select: none;
+}
+.th-sort:hover {
+  text-decoration: underline;
+}

@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { usd, pct, parseNumber } from "../lib/format.js";
 import { buildTargets, rebalanceToNewTotal, rebalanceWithAdditionalInvestment } from "../lib/rebalance.js";
 import { parseHoldingsPaste } from "../lib/pasteHoldings.js";
+import { nextSort, sortRows, sortIndicator } from "../lib/sort.js";
 
 export default function Rebalancer({ qqqTop10, customStocks = [] }) {
   const [useTop10As100Pct, setUseTop10As100Pct] = useState(true);
@@ -11,11 +12,9 @@ export default function Rebalancer({ qqqTop10, customStocks = [] }) {
 
   const [current, setCurrent] = useState(() => ({}));
 
-  // Paste-to-fill state
   const [pasteText, setPasteText] = useState("");
   const [pasteError, setPasteError] = useState("");
 
-  // Base (target) symbols: Top10 + custom
   const baseSymbols = useMemo(() => {
     const base = (qqqTop10 || []).map(h => ({ symbol: h.symbol, name: h.name }));
     const custom = (customStocks || []).map(s => ({ symbol: s.symbol, name: s.name || s.symbol }));
@@ -25,20 +24,14 @@ export default function Rebalancer({ qqqTop10, customStocks = [] }) {
     return [...map.values()];
   }, [qqqTop10, customStocks]);
 
-  // Build symbol set for parsing/aliasing
   const baseAllowedSymbolsSet = useMemo(() => new Set(baseSymbols.map(s => s.symbol)), [baseSymbols]);
   const hasCombinedAlphabet = baseAllowedSymbolsSet.has("GOOG+GOOGL");
 
-  // Include any symbols that exist in CURRENT holdings (even if not in today's Top10)
-  // but if combined Alphabet exists, never show GOOG/GOOGL as separate rows
   const symbols = useMemo(() => {
     const map = new Map(baseSymbols.map(s => [s.symbol, s]));
-
     for (const sym of Object.keys(current || {})) {
       if (hasCombinedAlphabet && (sym === "GOOG" || sym === "GOOGL")) continue;
-      if (!map.has(sym)) {
-        map.set(sym, { symbol: sym, name: `${sym} (not in target)` });
-      }
+      if (!map.has(sym)) map.set(sym, { symbol: sym, name: `${sym} (not in target)` });
     }
     return [...map.values()];
   }, [baseSymbols, current, hasCombinedAlphabet]);
@@ -49,15 +42,11 @@ export default function Rebalancer({ qqqTop10, customStocks = [] }) {
     return buildTargets({ qqqTop10, useTop10As100Pct, customStocks });
   }, [qqqTop10, useTop10As100Pct, customStocks]);
 
-  // Extend targets with any current-only symbols => targetPct 0
-  // and if combined Alphabet exists, never add GOOG/GOOGL as 0% rows
   const extendedTargets = useMemo(() => {
     const tMap = new Map((targets || []).map(t => [t.symbol, t]));
     for (const sym of Object.keys(current || {})) {
       if (hasCombinedAlphabet && (sym === "GOOG" || sym === "GOOGL")) continue;
-      if (!tMap.has(sym)) {
-        tMap.set(sym, { symbol: sym, name: `${sym} (not in target)`, targetPct: 0 });
-      }
+      if (!tMap.has(sym)) tMap.set(sym, { symbol: sym, name: `${sym} (not in target)`, targetPct: 0 });
     }
     return [...tMap.values()];
   }, [targets, current, hasCombinedAlphabet]);
@@ -80,13 +69,9 @@ export default function Rebalancer({ qqqTop10, customStocks = [] }) {
   function parseAndFill() {
     setPasteError("");
 
-    // Pass 1: parse using allowedSymbolsSet (so GOOG/GOOGL alias mapping works when GOOG+GOOGL exists)
     const parsedKnown = parseHoldingsPaste(pasteText, allowedSymbolsSet);
-
-    // Pass 2: parse without allowedSymbolsSet (captures "old" holdings like COST that aren’t in today’s targets)
     const parsedAll = parseHoldingsPaste(pasteText, null);
-
-    const parsed = { ...parsedAll, ...parsedKnown }; // known wins if overlap
+    const parsed = { ...parsedAll, ...parsedKnown };
     const count = Object.keys(parsed).length;
 
     if (count === 0) {
@@ -94,7 +79,6 @@ export default function Rebalancer({ qqqTop10, customStocks = [] }) {
       return;
     }
 
-    // If the app uses combined Alphabet, fold GOOG/GOOGL into GOOG+GOOGL and remove the originals
     if (hasCombinedAlphabet) {
       const g = (parsed.GOOG || 0) + (parsed.GOOGL || 0);
       if (g > 0) parsed["GOOG+GOOGL"] = (parsed["GOOG+GOOGL"] || 0) + g;
@@ -127,15 +111,37 @@ NFLX $2.18K
 TSLA $2.59K
 COST $1.91K`;
 
+  // Sorting state for both tables
+  const [sortCurrent, setSortCurrent] = useState({ key: "symbol", dir: "asc" });
+  const [sortPlan, setSortPlan] = useState({ key: "targetPct", dir: "desc" });
+
+  const currentRows = useMemo(() => {
+    return sortRows(symbols, sortCurrent, (s, key) => {
+      if (key === "symbol") return s.symbol;
+      if (key === "name") return s.name;
+      if (key === "current") return Number(current[s.symbol] || 0);
+      return s[key];
+    });
+  }, [symbols, sortCurrent, current]);
+
+  const planRows = useMemo(() => {
+    return sortRows(result.rows || [], sortPlan, (r, key) => {
+      if (key === "symbol") return r.symbol;
+      if (key === "targetPct") return r.targetPct;
+      if (key === "current") return r.current;
+      if (key === "targetValue") return r.targetValue;
+      if (key === "delta") return r.delta;
+      if (key === "suggestedBuy") return r.suggestedBuy || 0;
+      return r[key];
+    });
+  }, [result.rows, sortPlan]);
+
   return (
     <div className="card">
       <div className="row">
         <div className="field">
           <label>Top-10 weighting mode</label>
-          <select
-            value={useTop10As100Pct ? "100" : "actual"}
-            onChange={e => setUseTop10As100Pct(e.target.value === "100")}
-          >
+          <select value={useTop10As100Pct ? "100" : "actual"} onChange={e => setUseTop10As100Pct(e.target.value === "100")}>
             <option value="100">Use 100% (Top-10-only portfolio)</option>
             <option value="actual">Use actual QQQ weights (Top-10 slice of QQQ)</option>
           </select>
@@ -163,18 +169,12 @@ COST $1.91K`;
       </div>
 
       <div className="subtle" style={{ marginTop: 10 }}>
-        Paste holdings values (from ChatGPT). Any symbols you own that are not in today’s target list will still be included
-        and will get a 0% target (so the plan will tell you to sell them in “New Total” mode).
+        Paste holdings values (from ChatGPT). Symbols you own that are not in today’s target list will still be included and get a 0% target.
       </div>
 
       <hr />
 
       <h1 style={{ fontSize: 16, marginBottom: 8 }}>Paste holdings</h1>
-
-      <div className="subtle" style={{ marginBottom: 8 }}>
-        Supported formats: <span className="mono">NVDA $8.83K</span>, <span className="mono">MSFT=7230</span>,{" "}
-        <span className="mono">AAPL: 6,350</span>, <span className="mono">AMZN 4600</span>.
-      </div>
 
       <textarea
         value={pasteText}
@@ -186,12 +186,8 @@ COST $1.91K`;
 
       <div className="row" style={{ marginTop: 10, alignItems: "center" }}>
         <button onClick={parseAndFill}>Parse & Fill</button>
-        <button onClick={() => setPasteText(example)} className="secondary">
-          Insert example
-        </button>
-        <button onClick={clearCurrent} className="secondary">
-          Clear current values
-        </button>
+        <button onClick={() => setPasteText(example)} className="secondary">Insert example</button>
+        <button onClick={clearCurrent} className="secondary">Clear current values</button>
         {pasteError && (
           <span className="pill" style={{ borderColor: "#ffd2d2", background: "#fff7f7" }}>
             <span className="mono">{pasteError}</span>
@@ -206,13 +202,13 @@ COST $1.91K`;
       <table className="table">
         <thead>
           <tr>
-            <th>Symbol</th>
-            <th>Company</th>
-            <th>Current value</th>
+            <th className="th-sort" onClick={() => setSortCurrent(s => nextSort(s, "symbol"))}>Symbol{sortIndicator(sortCurrent, "symbol")}</th>
+            <th className="th-sort" onClick={() => setSortCurrent(s => nextSort(s, "name"))}>Company{sortIndicator(sortCurrent, "name")}</th>
+            <th className="th-sort" onClick={() => setSortCurrent(s => nextSort(s, "current"))}>Current value{sortIndicator(sortCurrent, "current")}</th>
           </tr>
         </thead>
         <tbody>
-          {symbols.map(s => (
+          {currentRows.map(s => (
             <tr key={s.symbol}>
               <td className="mono">{s.symbol}</td>
               <td>{s.name}</td>
@@ -231,29 +227,28 @@ COST $1.91K`;
       <hr />
 
       <div className="row">
-        <span className="pill">
-          Current total: <span className="mono">{usd(result.currentTotal)}</span>
-        </span>
-        <span className="pill">
-          Target total: <span className="mono">{usd(result.newTotal)}</span>
-        </span>
+        <span className="pill">Current total: <span className="mono">{usd(result.currentTotal)}</span></span>
+        <span className="pill">Target total: <span className="mono">{usd(result.newTotal)}</span></span>
       </div>
 
       <table className="table">
         <thead>
           <tr>
-            <th>Symbol</th>
-            <th>Target %</th>
-            <th>Current</th>
-            <th>Target</th>
-            {mode === "newTotal" ? <th>Buy/Sell</th> : <th>Suggested Buy</th>}
+            <th className="th-sort" onClick={() => setSortPlan(s => nextSort(s, "symbol"))}>Symbol{sortIndicator(sortPlan, "symbol")}</th>
+            <th className="th-sort" onClick={() => setSortPlan(s => nextSort(s, "targetPct"))}>Target %{sortIndicator(sortPlan, "targetPct")}</th>
+            <th className="th-sort" onClick={() => setSortPlan(s => nextSort(s, "current"))}>Current{sortIndicator(sortPlan, "current")}</th>
+            <th className="th-sort" onClick={() => setSortPlan(s => nextSort(s, "targetValue"))}>Target{sortIndicator(sortPlan, "targetValue")}</th>
+            {mode === "newTotal" ? (
+              <th className="th-sort" onClick={() => setSortPlan(s => nextSort(s, "delta"))}>Buy/Sell{sortIndicator(sortPlan, "delta")}</th>
+            ) : (
+              <th className="th-sort" onClick={() => setSortPlan(s => nextSort(s, "suggestedBuy"))}>Suggested Buy{sortIndicator(sortPlan, "suggestedBuy")}</th>
+            )}
           </tr>
         </thead>
         <tbody>
-          {result.rows.map(r => {
+          {planRows.map(r => {
             const buySell = r.delta;
             const buyOnly = r.suggestedBuy || 0;
-
             return (
               <tr key={r.symbol}>
                 <td className="mono">{r.symbol}</td>
