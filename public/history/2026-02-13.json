@@ -1,7 +1,7 @@
 {
   "source": "schwab",
   "asOfClose": "02/13/2026",
-  "fetchedAtUtc": "2026-02-16T05:14:11.147331Z",
+  "fetchedAtUtc": "2026-02-17T05:08:15.996467Z",
   "holdings": [
     {
       "symbol": "NVDA",
@@ -16,37 +16,37 @@
     {
       "symbol": "MSFT",
       "name": "Microsoft Corp",
-      "weightPct": 5.98
+      "weightPct": 5.81
     },
     {
       "symbol": "AMZN",
       "name": "Amazon.com Inc",
-      "weightPct": 4.31
-    },
-    {
-      "symbol": "META",
-      "name": "Meta Platforms Inc Class A",
-      "weightPct": 3.84
+      "weightPct": 4.22
     },
     {
       "symbol": "TSLA",
       "name": "Tesla Inc",
-      "weightPct": 3.66
+      "weightPct": 4.13
+    },
+    {
+      "symbol": "META",
+      "name": "Meta Platforms Inc Class A",
+      "weightPct": 3.8
     },
     {
       "symbol": "GOOGL",
       "name": "Alphabet Inc Class A",
-      "weightPct": 3.61
-    },
-    {
-      "symbol": "GOOG",
-      "name": "Alphabet Inc Class C",
-      "weightPct": 3.35
+      "weightPct": 3.5
     },
     {
       "symbol": "WMT",
       "name": "Walmart Inc",
-      "weightPct": 3.33
+      "weightPct": 3.36
+    },
+    {
+      "symbol": "GOOG",
+      "name": "Alphabet Inc Class C",
+      "weightPct": 3.25
     },
     {
       "symbol": "AVGO",
@@ -54,54 +54,54 @@
       "weightPct": 3.13
     },
     {
+      "symbol": "MU",
+      "name": "Micron Technology Inc",
+      "weightPct": 2.46
+    },
+    {
       "symbol": "COST",
       "name": "Costco Wholesale Corp",
       "weightPct": 2.31
     },
     {
-      "symbol": "MU",
-      "name": "Micron Technology Inc",
-      "weightPct": 2.26
-    },
-    {
-      "symbol": "NFLX",
-      "name": "Netflix Inc",
-      "weightPct": 1.87
-    },
-    {
       "symbol": "AMD",
       "name": "Advanced Micro Devices Inc",
-      "weightPct": 1.87
+      "weightPct": 1.86
     },
     {
       "symbol": "CSCO",
       "name": "Cisco Systems Inc",
-      "weightPct": 1.83
+      "weightPct": 1.8
+    },
+    {
+      "symbol": "NFLX",
+      "name": "Netflix Inc",
+      "weightPct": 1.8
     },
     {
       "symbol": "PLTR",
       "name": "Palantir Technologies Inc Ordinary Share...",
-      "weightPct": 1.71
+      "weightPct": 1.65
     },
     {
       "symbol": "LRCX",
       "name": "Lam Research Corp",
-      "weightPct": 1.53
+      "weightPct": 1.58
     },
     {
       "symbol": "AMAT",
       "name": "Applied Materials Inc",
-      "weightPct": 1.41
+      "weightPct": 1.44
+    },
+    {
+      "symbol": "TMUS",
+      "name": "T-Mobile US Inc",
+      "weightPct": 1.25
     },
     {
       "symbol": "PEP",
       "name": "PepsiCo Inc",
       "weightPct": 1.23
-    },
-    {
-      "symbol": "INTC",
-      "name": "Intel Corp",
-      "weightPct": 1.21
     }
   ]
 }
