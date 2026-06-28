@@ -1,7 +1,7 @@
 {
   "source": "schwab",
   "asOfClose": "06/26/2026",
-  "fetchedAtUtc": "2026-06-27T06:40:17.642191Z",
+  "fetchedAtUtc": "2026-06-28T07:12:06.990035Z",
   "holdings": [
     {
       "symbol": "NVDA",
@@ -16,22 +16,22 @@
     {
       "symbol": "MU",
       "name": "Micron Technology Inc",
-      "weightPct": 5.29
+      "weightPct": 5.3
     },
     {
       "symbol": "MSFT",
       "name": "Microsoft Corp",
-      "weightPct": 4.49
+      "weightPct": 4.41
     },
     {
       "symbol": "AMZN",
       "name": "Amazon.com Inc",
-      "weightPct": 4.07
+      "weightPct": 4.09
     },
     {
       "symbol": "AMD",
       "name": "Advanced Micro Devices Inc",
-      "weightPct": 3.78
+      "weightPct": 3.8
     },
     {
       "symbol": "GOOGL",
@@ -39,13 +39,13 @@
       "weightPct": 3.26
     },
     {
-      "symbol": "TSLA",
-      "name": "Tesla Inc",
-      "weightPct": 3.08
-    },
-    {
       "symbol": "GOOG",
       "name": "Alphabet Inc Class C",
+      "weightPct": 3.06
+    },
+    {
+      "symbol": "TSLA",
+      "name": "Tesla Inc",
       "weightPct": 3.05
     },
     {
@@ -56,12 +56,12 @@
     {
       "symbol": "AVGO",
       "name": "Broadcom Inc",
-      "weightPct": 2.91
+      "weightPct": 2.94
     },
     {
       "symbol": "META",
       "name": "Meta Platforms Inc Class A",
-      "weightPct": 2.69
+      "weightPct": 2.68
     },
     {
       "symbol": "WMT",
@@ -71,37 +71,37 @@
     {
       "symbol": "CSCO",
       "name": "Cisco Systems Inc",
-      "weightPct": 2.13
+      "weightPct": 2.11
     },
     {
       "symbol": "AMAT",
       "name": "Applied Materials Inc",
-      "weightPct": 2.08
+      "weightPct": 2.1
     },
     {
       "symbol": "LRCX",
       "name": "Lam Research Corp",
-      "weightPct": 2.07
+      "weightPct": 2.1
     },
     {
       "symbol": "COST",
       "name": "Costco Wholesale Corp",
-      "weightPct": 1.9
+      "weightPct": 1.91
     },
     {
       "symbol": "KLAC",
       "name": "KLA Corp",
-      "weightPct": 1.42
+      "weightPct": 1.41
     },
     {
       "symbol": "NFLX",
       "name": "Netflix Inc",
-      "weightPct": 1.37
+      "weightPct": 1.36
     },
     {
       "symbol": "SNDK",
       "name": "SanDisk Corp Ordinary Shares",
-      "weightPct": 1.3
+      "weightPct": 1.27
     }
   ]
 }
