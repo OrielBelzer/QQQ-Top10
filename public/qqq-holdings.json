@@ -1,7 +1,7 @@
 {
   "source": "schwab",
-  "asOfClose": "",
-  "fetchedAtUtc": "2026-08-28T15:32:12.078002Z",
+  "asOfClose": "08/28/2026",
+  "fetchedAtUtc": "2026-08-29T10:16:41.964540Z",
   "holdings": [
     {
       "symbol": "NVDA",
