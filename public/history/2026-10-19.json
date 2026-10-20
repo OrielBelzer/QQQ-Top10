@@ -1,0 +1,107 @@
+{
+  "source": "schwab",
+  "asOfClose": "10/19/2026",
+  "fetchedAtUtc": "2026-10-20T08:44:28.236700Z",
+  "holdings": [
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corp",
+      "weightPct": 8.05
+    },
+    {
+      "symbol": "AAPL",
+      "name": "Apple Inc",
+      "weightPct": 7.68
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft Corp",
+      "weightPct": 6.16
+    },
+    {
+      "symbol": "MU",
+      "name": "Micron Technology Inc",
+      "weightPct": 4.47
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon.com Inc",
+      "weightPct": 4.23
+    },
+    {
+      "symbol": "AMD",
+      "name": "Advanced Micro Devices Inc",
+      "weightPct": 3.9
+    },
+    {
+      "symbol": "META",
+      "name": "Meta Platforms Inc Class A",
+      "weightPct": 3.37
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet Inc Class A",
+      "weightPct": 3.15
+    },
+    {
+      "symbol": "GOOG",
+      "name": "Alphabet Inc Class C",
+      "weightPct": 2.93
+    },
+    {
+      "symbol": "TSLA",
+      "name": "Tesla Inc",
+      "weightPct": 2.93
+    },
+    {
+      "symbol": "SPCX",
+      "name": "Space Exploration Technologies Corp Clas...",
+      "weightPct": 2.71
+    },
+    {
+      "symbol": "AVGO",
+      "name": "Broadcom Inc",
+      "weightPct": 2.52
+    },
+    {
+      "symbol": "WMT",
+      "name": "Walmart Inc",
+      "weightPct": 2.43
+    },
+    {
+      "symbol": "INTC",
+      "name": "Intel Corp",
+      "weightPct": 2.13
+    },
+    {
+      "symbol": "PLTR",
+      "name": "Palantir Technologies Inc Ordinary Share...",
+      "weightPct": 1.96
+    },
+    {
+      "symbol": "CSCO",
+      "name": "Cisco Systems Inc",
+      "weightPct": 1.84
+    },
+    {
+      "symbol": "COST",
+      "name": "Costco Wholesale Corp",
+      "weightPct": 1.84
+    },
+    {
+      "symbol": "LRCX",
+      "name": "Lam Research Corp",
+      "weightPct": 1.47
+    },
+    {
+      "symbol": "AMAT",
+      "name": "Applied Materials Inc",
+      "weightPct": 1.45
+    },
+    {
+      "symbol": "PANW",
+      "name": "Palo Alto Networks Inc",
+      "weightPct": 1.28
+    }
+  ]
+}
