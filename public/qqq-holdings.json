@@ -1,107 +1,107 @@
 {
   "source": "schwab",
-  "asOfClose": "11/10/2026",
-  "fetchedAtUtc": "2026-11-11T11:17:07.010397Z",
+  "asOfClose": "11/11/2026",
+  "fetchedAtUtc": "2026-11-12T11:35:16.526788Z",
   "holdings": [
     {
       "symbol": "AAPL",
       "name": "Apple Inc",
-      "weightPct": 8.52
+      "weightPct": 8.44
     },
     {
       "symbol": "NVDA",
       "name": "NVIDIA Corp",
-      "weightPct": 7.67
+      "weightPct": 7.1
     },
     {
       "symbol": "MSFT",
       "name": "Microsoft Corp",
-      "weightPct": 6.72
+      "weightPct": 6.68
     },
     {
       "symbol": "AMZN",
       "name": "Amazon.com Inc",
-      "weightPct": 4.77
-    },
-    {
-      "symbol": "MU",
-      "name": "Micron Technology Inc",
-      "weightPct": 3.67
+      "weightPct": 4.75
     },
     {
       "symbol": "AMD",
       "name": "Advanced Micro Devices Inc",
-      "weightPct": 3.45
+      "weightPct": 3.78
+    },
+    {
+      "symbol": "MU",
+      "name": "Micron Technology Inc",
+      "weightPct": 3.77
     },
     {
       "symbol": "TSLA",
       "name": "Tesla Inc",
-      "weightPct": 3.21
+      "weightPct": 3.28
     },
     {
       "symbol": "META",
       "name": "Meta Platforms Inc Class A",
-      "weightPct": 3.09
-    },
-    {
-      "symbol": "WMT",
-      "name": "Walmart Inc",
-      "weightPct": 2.87
+      "weightPct": 3.15
     },
     {
       "symbol": "GOOGL",
       "name": "Alphabet Inc Class A",
-      "weightPct": 2.85
+      "weightPct": 2.79
     },
     {
       "symbol": "SPCX",
       "name": "Space Exploration Technologies Corp Clas...",
-      "weightPct": 2.71
+      "weightPct": 2.78
+    },
+    {
+      "symbol": "WMT",
+      "name": "Walmart Inc",
+      "weightPct": 2.78
     },
     {
       "symbol": "GOOG",
       "name": "Alphabet Inc Class C",
-      "weightPct": 2.68
+      "weightPct": 2.61
     },
     {
       "symbol": "AVGO",
       "name": "Broadcom Inc",
-      "weightPct": 2.38
+      "weightPct": 2.51
     },
     {
       "symbol": "COST",
       "name": "Costco Wholesale Corp",
-      "weightPct": 2.2
+      "weightPct": 2.15
     },
     {
       "symbol": "CSCO",
       "name": "Cisco Systems Inc",
-      "weightPct": 1.74
+      "weightPct": 1.77
     },
     {
       "symbol": "PLTR",
       "name": "Palantir Technologies Inc Ordinary Share...",
-      "weightPct": 1.74
+      "weightPct": 1.77
     },
     {
       "symbol": "INTC",
       "name": "Intel Corp",
-      "weightPct": 1.39
-    },
-    {
-      "symbol": "NFLX",
-      "name": "Netflix Inc",
-      "weightPct": 1.24
+      "weightPct": 1.42
     },
     {
       "symbol": "AMAT",
       "name": "Applied Materials Inc",
-      "weightPct": 1.24
+      "weightPct": 1.34
+    },
+    {
+      "symbol": "LRCX",
+      "name": "Lam Research Corp",
+      "weightPct": 1.26
     },
     {
       "symbol": "PANW",
       "name": "Palo Alto Networks Inc",
-      "weightPct": 1.2
+      "weightPct": 1.23
     }
   ]
 }
