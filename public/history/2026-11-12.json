@@ -1,0 +1,107 @@
+{
+  "source": "schwab",
+  "asOfClose": "11/12/2026",
+  "fetchedAtUtc": "2026-11-13T11:19:39.490342Z",
+  "holdings": [
+    {
+      "symbol": "AAPL",
+      "name": "Apple Inc",
+      "weightPct": 8.44
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corp",
+      "weightPct": 6.76
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft Corp",
+      "weightPct": 6.57
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon.com Inc",
+      "weightPct": 4.85
+    },
+    {
+      "symbol": "AMD",
+      "name": "Advanced Micro Devices Inc",
+      "weightPct": 3.85
+    },
+    {
+      "symbol": "MU",
+      "name": "Micron Technology Inc",
+      "weightPct": 3.75
+    },
+    {
+      "symbol": "TSLA",
+      "name": "Tesla Inc",
+      "weightPct": 3.31
+    },
+    {
+      "symbol": "META",
+      "name": "Meta Platforms Inc Class A",
+      "weightPct": 3.17
+    },
+    {
+      "symbol": "SPCX",
+      "name": "Space Exploration Technologies Corp Clas...",
+      "weightPct": 2.81
+    },
+    {
+      "symbol": "WMT",
+      "name": "Walmart Inc",
+      "weightPct": 2.8
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet Inc Class A",
+      "weightPct": 2.8
+    },
+    {
+      "symbol": "AVGO",
+      "name": "Broadcom Inc",
+      "weightPct": 2.62
+    },
+    {
+      "symbol": "GOOG",
+      "name": "Alphabet Inc Class C",
+      "weightPct": 2.61
+    },
+    {
+      "symbol": "COST",
+      "name": "Costco Wholesale Corp",
+      "weightPct": 2.17
+    },
+    {
+      "symbol": "PLTR",
+      "name": "Palantir Technologies Inc Ordinary Share...",
+      "weightPct": 1.78
+    },
+    {
+      "symbol": "CSCO",
+      "name": "Cisco Systems Inc",
+      "weightPct": 1.77
+    },
+    {
+      "symbol": "INTC",
+      "name": "Intel Corp",
+      "weightPct": 1.4
+    },
+    {
+      "symbol": "AMAT",
+      "name": "Applied Materials Inc",
+      "weightPct": 1.35
+    },
+    {
+      "symbol": "LRCX",
+      "name": "Lam Research Corp",
+      "weightPct": 1.28
+    },
+    {
+      "symbol": "TXN",
+      "name": "Texas Instruments Inc",
+      "weightPct": 1.26
+    }
+  ]
+}
